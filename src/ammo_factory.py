@@ -1,5 +1,3 @@
-from urllib import urlencode
-import requests
 from keystoneclient.v2_0 import client
 
 AMMO_TMPL = '''\
@@ -7,7 +5,7 @@ AMMO_TMPL = '''\
 Host: {host}\r
 User-Agent: yandex-tank/1.1.1\r
 {headers}\r
-
+\r
 {body}'''
 
 NL = '\r\n'
@@ -31,71 +29,73 @@ def gen_request(method, url, host, headers, body=None):
     return '%s\n%s' % (len(ammo), ammo)
 
 
+if __name__ == '__main__':
+    print auth('admin','admin','admin','http://172.18.173.130:5000/v2.0/')
 
-    # def create(url, headers, body):
-    #     """
-    #     # Method: POST
-    #     # URL: http://host_address/v2.0/users
-    #     {
-    #       "user": {
-    #         "username": "jqsmith",
-    #         "email": "john.smith@example.org",
-    #         "enabled": true,
-    #         "OS-KSADM:password": "secrete"
-    #       }
-    #     }
-    #     """
-    #
-    #
-    # def get(url, headers, body):
-    #     """
-    # # Method: GET
-    # # URL: http://host_address/v2.0/users
-    # {
-    #   "user": {
-    #     "username": "jqsmith",
-    #     "email": "john.smith@example.org",
-    #     "enabled": true,
-    #     "OS-KSADM:password": "secrete"
-    #   }
-    # }
-    # """
-    #
-    #
-    # def gen_create(url, headers, body):
-    #     """
-    #     # Method: POST
-    #     # URL: http://host_address/v2.0/users
-    #     {
-    #       "user": {
-    #         "username": "jqsmith",
-    #         "email": "john.smith@example.org",
-    #         "enabled": true,
-    #         "OS-KSADM:password": "secrete"
-    #       }
-    #     }
-    #     """
-    #
-    #
-    # def gen_delete(url, headers, body):
-    #     """
-    #     # Method: DELETE
-    #     # URL: http://host_address/v2.0/users{/userId}
-    #     """
-    #
-    #
-    # def gen_update(url, headers, body):
-    #     """
-    #     # Method: POST
-    #     # URL: http://host_address/v2.0/users{/userId}
-    #     {
-    #       "user": {
-    #         "username": "jqsmith",
-    #         "email": "john.smith@example.org",
-    #         "enabled": true,
-    #         "OS-KSADM:password": "secrete"
-    #       }
-    #     }
-    #     """
+# def create(url, headers, body):
+#     """
+#     # Method: POST
+#     # URL: http://host_address/v2.0/users
+#     {
+#       "user": {
+#         "username": "jqsmith",
+#         "email": "john.smith@example.org",
+#         "enabled": true,
+#         "OS-KSADM:password": "secrete"
+#       }
+#     }
+#     """
+#
+#
+# def get(url, headers, body):
+#     """
+# # Method: GET
+# # URL: http://host_address/v2.0/users
+# {
+#   "user": {
+#     "username": "jqsmith",
+#     "email": "john.smith@example.org",
+#     "enabled": true,
+#     "OS-KSADM:password": "secrete"
+#   }
+# }
+# """
+#
+#
+# def gen_create(url, headers, body):
+#     """
+#     # Method: POST
+#     # URL: http://host_address/v2.0/users
+#     {
+#       "user": {
+#         "username": "jqsmith",
+#         "email": "john.smith@example.org",
+#         "enabled": true,
+#         "OS-KSADM:password": "secrete"
+#       }
+#     }
+#     """
+#
+#
+# def gen_delete(url, headers, body):
+#     """
+#     # Method: DELETE
+#     # URL: http://host_address/v2.0/users{/userId}
+#     """
+#
+#
+# def gen_update(url, headers, body):
+#     """
+#     # Method: POST
+#     # URL: http://host_address/v2.0/users{/userId}
+#     {
+#       "user": {
+#         "username": "jqsmith",
+#         "email": "john.smith@example.org",
+#         "enabled": true,
+#         "OS-KSADM:password": "secrete"
+#       }
+#     }
+#     """
 
 
