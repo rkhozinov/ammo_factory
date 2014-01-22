@@ -1,5 +1,3 @@
-import json
-import requests
 import unittest2
 import src.ammo_factory as gen
 
