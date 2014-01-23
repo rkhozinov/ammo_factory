@@ -1,7 +1,6 @@
 import json
-import requests
 import unittest2
-import src.ammo_factory as gen
+from src.ammo_factory import create_user_and_get_id, gen_request, auth
 
 
 class AmmoFactoryTest(unittest2.TestCase):
@@ -12,33 +11,30 @@ class AmmoFactoryTest(unittest2.TestCase):
         self.host = '172.18.173.130:5000'
 
     def test_auth(self):
-        token = gen.auth(self.username, self.password, self.tenant_name,
-                         self.host)
-        print (token)
+        token = auth(self.username, self.password, self.tenant_name,
+                     self.host)
+        print token
         self.assertIsInstance(token, unicode)
         self.assertEqual(len(token), 32)
 
     def test_get_user_list(self):
         headers = dict()
-        token = gen.auth(self.username, self.password,
-                         self.tenant_name, self.host)
-        headers['X-Auth-Token'] = token
+        headers['X-Auth-Token'] = auth(self.username, self.password,
+                                       self.tenant_name, self.host)
+        headers['Content-Type'] = 'application/json'
 
-        req = gen.gen_request('get', '/v3users' % token,
-                              self.host, headers, body=None)
-        print req
-
+        req = gen_request('get', '/v3/users',
+                          self.host, headers, body=None)
         with open("../tmp/get_user_list_ammo.txt", "w") as f:
-            for x in xrange(1000):
+            for x in xrange(60):
                 f.write(req)
         self.assertIsInstance(req, str)
 
-
     def test_create_60_users(self):
         headers = dict()
-        token = gen.auth(self.username, self.password,
-                         self.tenant_name, self.host)
-        headers['X-Auth-Token'] = token
+        headers['X-Auth-Token'] = auth(self.username, self.password,
+                                       self.tenant_name, self.host)
+        headers['Content-Type'] = 'application/json'
         with open("../tmp/create_user_ammo.txt", "w") as f:
             for x in xrange(60):
                 body = json.dumps({
@@ -49,11 +45,9 @@ class AmmoFactoryTest(unittest2.TestCase):
                         "password": "swordfish"
                     }
                 })
-                req = gen.gen_request('post', '/v3/users',
-                                      self.host, headers, body)
+                req = gen_request('post', '/v3/users',
+                                  self.host, headers, body)
                 f.write(req)
-                self.assertIsInstance(req, str)
-                #self.assertEqual(req.split('\n')[0],'275')
 
     def test_delete_60_users(self):
         ids = []
@@ -66,17 +60,17 @@ class AmmoFactoryTest(unittest2.TestCase):
                     "password": "swordfish"
                 }
             })
-            ids.append(gen.create_user_and_get_id(self.username, self.password,
-                                                  self.tenant_name,
-                                                  self.host, body))
+            ids.append(create_user_and_get_id(self.username, self.password,
+                                              self.tenant_name,
+                                              self.host, body))
         with open("../tmp/delete_user_ammo.txt", "w") as f:
-            headers = {}
-            token = gen.auth(self.username, self.password,
-                                 self.tenant_name, self.host)
-            headers['X-Auth-Token'] = token
+            headers = {'X-Auth-Token': auth(self.username, self.password,
+                                            self.tenant_name, self.host),
+                       'Content-Type': 'application/json'}
+
             for i in ids:
-                req = gen.gen_request('delete', '/v3/users/' + i,
-                                      self.host, headers)
+                req = gen_request('delete', '/v3/users/' + i,
+                                  self.host, headers)
                 f.write(req)
 
     def test_auth_request(self):
@@ -88,12 +82,10 @@ class AmmoFactoryTest(unittest2.TestCase):
         """
         body = json.dumps({"auth": {"passwordCredentials":
                                         {"username": "admin",
-                                         "password": "admin"},
-                                    "tenantName": "admin"
-        }
-        })
+                                         "password": "admin"
+                                        }, "tenantName": "admin"}})
         headers = dict()
-        req1 = gen.gen_request('post', '/v2.0/tokens',
-                               self.host, headers, body)
+        req1 = gen_request('post', '/v2.0/tokens',
+                           self.host, headers, body)
         with open("../tmp/base_ammo.txt", "w") as f:
             f.write(req1)
