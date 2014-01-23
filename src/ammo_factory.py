@@ -21,9 +21,10 @@ def auth(username, password, tenant_name, auth_url):
 
 
 def gen_request(method, url, host, headers, body=None):
-    assert isinstance(headers,dict)
+    assert isinstance(headers, dict)
     assert method.upper() in ['GET', 'POST']
-    body = json.dumps(body) if body else ''
+    assert not body or isinstance(body, str)
+    body = body if body else ''
 
     headers['Content-Type'] = 'application/json'
     headers['Content-length'] = str(len(body))
@@ -32,12 +33,12 @@ def gen_request(method, url, host, headers, body=None):
     ammo = AMMO_TMPL.format(
         method=method.upper(), host=host, url=url,
         headers='\r\n'.join("%s: %s" % (n, v) for (n, v) in headers.items()),
-        body=(body.replace("'", '"') + '\r\n') if body else '' )
+        body=(body.replace("'", '"') + '\r\n') if body else '')
     return '%s\n%s' % (len(ammo), ammo)
 
 
 if __name__ == '__main__':
-    print auth('admin','admin','admin','http://172.18.173.130:5000/v2.0/')
+    print auth('admin', 'admin', 'admin', 'http://172.18.173.130:5000/v2.0/')
 
 # def create(url, headers, body):
 #     """
