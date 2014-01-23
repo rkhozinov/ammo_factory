@@ -20,12 +20,18 @@ def auth(username, password, tenant_name, auth_url):
 
 
 def gen_request(method, url, host, headers, body=None):
+    assert isinstance(headers,dict)
+    assert method.upper() in ['GET', 'POST']
+    body = str(body) if body else ''
+
+    # headers['Content-Type'] = 'application/json'
+    # headers['Content-length'] = str(len(body))
+    # headers['Accept'] = 'application/xml'
+
     ammo = AMMO_TMPL.format(
-        method=method.upper(),
-        host=host,
-        url=url,
+        method=method.upper(), host=host, url=url,
         headers='\r\n'.join("%s: %s" % (n, v) for (n, v) in headers.items()),
-        body=(str(body) + '\r\n') if body else '' )
+        body=(body.replace("'",'"') + '\r\n') if body else '' )
     return '%s\n%s' % (len(ammo), ammo)
 
 
@@ -51,13 +57,6 @@ if __name__ == '__main__':
 #     """
 # # Method: GET
 # # URL: http://host_address/v2.0/users
-# {
-#   "user": {
-#     "username": "jqsmith",
-#     "email": "john.smith@example.org",
-#     "enabled": true,
-#     "OS-KSADM:password": "secrete"
-#   }
 # }
 # """
 #

@@ -1,12 +1,12 @@
-133
-GET v2.0/users HTTP/1.1
+134
+GET /v2.0/users HTTP/1.1
 Host: 172.18.173.130:5000
 User-Agent: yandex-tank/1.1.1
-X-Auth-Token: 15f60fa2edeb49cab241fb2bafb4d007
+X-Auth-Token: b793b5baf979431dade2ad2922399115
 
-133
-GET v2.0/users HTTP/1.1
+134
+GET /v2.0/users HTTP/1.1
 Host: 172.18.173.130:5000
 User-Agent: yandex-tank/1.1.1
-X-Auth-Token: 15f60fa2edeb49cab241fb2bafb4d007
+X-Auth-Token: b793b5baf979431dade2ad2922399115
 
