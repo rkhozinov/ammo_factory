@@ -31,6 +31,15 @@ def create_user_and_get_id(login, password, tenant_name, host_ip, user_json):
     return r.json()['user']['id']
 
 
+def get_users_ids(login, password, tenant_name, host_ip):
+    auth_url = 'http://{ip}/v2.0'.format(ip=host_ip)
+    v3_users = 'http://{ip}/v3/users'.format(ip=host_ip)
+    headers = {'X-Auth-Token': auth(login, password, tenant_name, auth_url),
+               'Content-Type': 'application/json'}
+    r = requests.get(v3_users, headers=headers)
+    return {user['name']: user['id'] for user in r.json()['users']}
+
+
 def gen_request(method, url, host, headers, body=None):
     assert isinstance(headers, dict)
     assert method.upper() in ['GET', 'POST', 'DELETE', 'PUT']
@@ -45,7 +54,7 @@ def gen_request(method, url, host, headers, body=None):
 
 
 if __name__ == '__main__':
-    print auth('admin', 'admin', 'admin', 'http://172.18.173.130:5000/v2.0/')
+    print get_users_ids('admin', 'admin', 'admin', '172.18.173.130:5000')
 
 # def create(url, headers, body):
 #     """
