@@ -1,5 +1,5 @@
 import json
-import src.ammo_factory
+from src import ammo_factory
 
 username = password = tenant_name = 'admin'
 host_ip = '172.18.173.130'
@@ -7,7 +7,7 @@ host_ip = '172.18.173.130'
 
 def test_create_60_users():
     headers = dict()
-    headers['X-Auth-Token'] = src.ammo_factory.auth(username, password,
+    headers['X-Auth-Token'] = ammo_factory.auth(username, password,
                                                     tenant_name, host_ip)
     headers['Content-Type'] = 'application/json'
     with open("../tmp/create_user_ammo.txt", "w") as f:
@@ -20,7 +20,7 @@ def test_create_60_users():
                     "password": "swordfish"
                 }
             })
-            req = src.ammo_factory.gen_request('post', '/v3/users',
+            req = ammo_factory.gen_request('post', '/v3/users',
                                                host_ip, headers, body)
             f.write(req)
 
