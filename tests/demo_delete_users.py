@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 import src.ammo_factory
 
 username = password = tenant_name = 'admin'
