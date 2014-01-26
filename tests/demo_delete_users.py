@@ -1,7 +1,7 @@
 import src.ammo_factory
 
 username = password = tenant_name = 'admin'
-host_ip = '172.18.173.130'
+host_ip = '172.18.173.130:5000'
 
 
 def test_delete_already_created_users():
