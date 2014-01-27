@@ -1,9 +1,32 @@
 import json
+import requests
 import unittest2
-from src.ammo_factory import gen_request, auth, get_users_ids
+from src.ammo_factory import gen_request, auth
 
 
 class AmmoFactoryTest(unittest2.TestCase):
+    @staticmethod
+    def create_user_and_get_id(login, password, tenant_name, host_ip,
+                               user_json):
+        auth_url = 'http://{ip}/v2.0'.format(ip=host_ip)
+        v3_users = 'http://{ip}/v3/users'.format(ip=host_ip)
+        headers = {
+        'X-Auth-Token': auth(login, password, tenant_name, auth_url),
+        'Content-Type': 'application/json'}
+        r = requests.post(v3_users, data=user_json, headers=headers)
+        return r.json()['user']['id']
+
+    @staticmethod
+    def get_users_ids(login, password, tenant_name, host_ip):
+        auth_url = 'http://{ip}/v2.0'.format(ip=host_ip)
+        v3_users = 'http://{ip}/v3/users'.format(ip=host_ip)
+        headers = {
+            'X-Auth-Token': auth(login, password, tenant_name,
+                                              auth_url),
+            'Content-Type': 'application/json'}
+        r = requests.get(v3_users, headers=headers)
+        return {user['name']: user['id'] for user in r.json()['users']}
+
     def setUp(self):
         self.username = 'admin'
         self.password = 'admin'
@@ -17,18 +40,18 @@ class AmmoFactoryTest(unittest2.TestCase):
         self.assertIsInstance(token, unicode)
         self.assertEqual(len(token), 32)
 
-    # def test_get_user_list(self):
-    #     headers = dict()
-    #     headers['X-Auth-Token'] = auth(self.username, self.password,
-    #                                    self.tenant_name, self.host)
-    #     headers['Content-Type'] = 'application/json'
-    #
-    #     req = gen_request('get', '/v3/users',
-    #                       self.host, headers, body=None)
-    #     with open("../tmp/get_user_list_ammo.txt", "w") as f:
-    #         for x in xrange(60):
-    #             f.write(req)
-    #     self.assertIsInstance(req, str)
+    def test_get_user_list(self):
+        headers = dict()
+        headers['X-Auth-Token'] = auth(self.username, self.password,
+                                       self.tenant_name, self.host)
+        headers['Content-Type'] = 'application/json'
+
+        req = gen_request('get', '/v3/users',
+                          self.host, headers, body=None)
+        with open("../tmp/get_user_list_ammo.txt", "w") as f:
+            for x in xrange(60):
+                f.write(req)
+        self.assertIsInstance(req, str)
 
     def test_create_60_users(self):
         headers = dict()
@@ -51,7 +74,7 @@ class AmmoFactoryTest(unittest2.TestCase):
                 f.write(req)
 
     def test_delete_already_created_users(self):
-        ids = get_users_ids(self.username, self.password,
+        ids = self.get_users_ids(self.username, self.password,
                             self.tenant_name, self.host)
         fetched_ids = [temp_id for (user, temp_id) in ids.items() if
                        'load_test_' in user]
@@ -64,7 +87,6 @@ class AmmoFactoryTest(unittest2.TestCase):
                 req = gen_request('delete', '/v3/users/%s' % i,
                                   self.host, headers)
                 f.write(req)
-
 
     # def test_create_and_delete_60_users(self):
     #     ids = []

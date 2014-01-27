@@ -28,13 +28,13 @@ def test_delete_existing_users():
                                                  tenant_name, host_ip),
                'Content-Type': 'application/json'}
 
-    with open("tmp/delete_existing_users.txt", "w") as f:
+    with open("delete_existing_users.txt", "w") as f:
         for i in needed_id:
             req = ammo_factory.gen_request('delete', '/v3/users/%s' % i,
                                            host_ip, headers)
             f.write(req)
 
-    with open('tmp/load.ini', 'w') as f:
+    with open('load.ini', 'w') as f:
         f.write('[phantom]\n')
         f.write('address=%s\n' % host_ip)
         f.write('rps_schedule=const(12, 5s)\n')

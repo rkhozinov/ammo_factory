@@ -14,7 +14,7 @@ def test_create_60_users():
                'Content-Type': 'application/json'}
     users_count = 60
 
-    with open("tmp/create_user_ammo.txt", "w") as f:
+    with open("create_user_ammo.txt", "w") as f:
         for x in xrange(users_count):
             body = json.dumps({
                 "user": {
@@ -29,7 +29,7 @@ def test_create_60_users():
                                            host_ip, headers, body)
             f.write(req)
 
-    with open('tmp/load.ini', 'w') as f:
+    with open('load.ini', 'w') as f:
         f.write('[phantom]\n')
         f.write('address=%s\n' % host_ip)
         f.write('rps_schedule=const(1, 1m)\n')
