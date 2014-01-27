@@ -16,7 +16,7 @@ def test_delete_already_created_users():
     headers['X-Auth-Token'] = src.ammo_factory.auth(username, password,
                                                     tenant_name, host_ip)
     headers['Content-Type'] = 'application/json'
-    with open("../tmp/delete_existed_users.txt", "w") as f:
+    with open("delete_existed_users.txt", "w") as f:
         for i in fetched_ids:
             req = src.ammo_factory.gen_request('delete', '/v3/users/%s' % i,
                                                host_ip, headers)
