@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('.')
 import src.ammo_factory
 
@@ -20,6 +21,11 @@ def test_delete_already_created_users():
             req = src.ammo_factory.gen_request('delete', '/v3/users/%s' % i,
                                                host_ip, headers)
             f.write(req)
+
+    with open('load.ini', 'w') as f:
+        f.write('[phantom]\n')
+        f.write('address=%s\n' % host_ip)
+        f.write('rps_schedule=const(1, 1m)')
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ def test_create_60_users():
     headers['X-Auth-Token'] = ammo_factory.auth(username, password,
                                                     tenant_name, host_ip)
     headers['Content-Type'] = 'application/json'
-    with open("../tmp/create_user_ammo.txt", "w") as f:
+    with open("create_user_ammo.txt", "w") as f:
         for x in xrange(60):
             body = json.dumps({
                 "user": {
@@ -26,6 +26,10 @@ def test_create_60_users():
                                                host_ip, headers, body)
             f.write(req)
 
+    with open('load.ini', 'w') as f:
+        f.write('[phantom]\n')
+        f.write('address=%s\n' % host_ip)
+        f.write('rps_schedule=const(1, 1m)')
 
 if __name__ == '__main__':
     test_create_60_users()
