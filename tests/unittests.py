@@ -1,6 +1,6 @@
 import json
 import unittest2
-from src.ammo_factory import create_user_and_get_id, gen_request, auth, get_users_ids
+from src.ammo_factory import gen_request, auth, get_users_ids
 
 
 class AmmoFactoryTest(unittest2.TestCase):
@@ -45,19 +45,21 @@ class AmmoFactoryTest(unittest2.TestCase):
                         "password": "swordfish"
                     }
                 })
+                headers['Content-Length'] = len(body)
                 req = gen_request('post', '/v3/users',
                                   self.host, headers, body)
                 f.write(req)
 
     def test_delete_already_created_users(self):
         ids = get_users_ids(self.username, self.password,
-                      self.tenant_name, self.host)
-        fetched_ids = [temp_id for (user, temp_id) in ids.items() if 'load_test_' in user]
+                            self.tenant_name, self.host)
+        fetched_ids = [temp_id for (user, temp_id) in ids.items() if
+                       'load_test_' in user]
         headers = dict()
         headers['X-Auth-Token'] = auth(self.username, self.password,
                                        self.tenant_name, self.host)
         headers['Content-Type'] = 'application/json'
-        with open("../tmp/delete_existed_users.txt", "w") as f:
+        with open("../tmp/delete_existing_users.txt", "w") as f:
             for i in fetched_ids:
                 req = gen_request('delete', '/v3/users/%s' % i,
                                   self.host, headers)

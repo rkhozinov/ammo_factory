@@ -23,6 +23,7 @@ def test_create_60_users():
                     "password": "swordfish"
                 }
             })
+            headers['Content-Length'] = len(body)
             req = ammo_factory.gen_request('post', '/v3/users',
                                            host_ip, headers, body)
             f.write(req)
