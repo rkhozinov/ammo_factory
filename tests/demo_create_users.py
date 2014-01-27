@@ -32,7 +32,7 @@ def test_create_60_users():
     with open('tmp/load.ini', 'w') as f:
         f.write('[phantom]\n')
         f.write('address=%s\n' % host_ip)
-        f.write('rps_schedule=const(1, 1m)\n')
+        f.write('rps_schedule=const(3, 15s)\n')
 
     print "Generated %d requests" % users_count
     if users_count:
