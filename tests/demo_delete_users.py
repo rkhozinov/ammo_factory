@@ -16,13 +16,13 @@ def test_delete_existing_users():
     headers['X-Auth-Token'] = src.ammo_factory.auth(username, password,
                                                     tenant_name, host_ip)
     headers['Content-Type'] = 'application/json'
-    with open("delete_existing_users.txt", "w") as f:
+    with open("tmp/delete_existing_users.txt", "w") as f:
         for i in fetched_ids:
             req = src.ammo_factory.gen_request('delete', '/v3/users/%s' % i,
                                                host_ip, headers)
             f.write(req)
 
-    with open('load.ini', 'w') as f:
+    with open('tmp/load.ini', 'w') as f:
         f.write('[phantom]\n')
         f.write('address=%s\n' % host_ip)
         f.write('rps_schedule=const(1, 1m)')
