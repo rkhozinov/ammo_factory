@@ -1,7 +1,7 @@
 import sys
 import requests
 
-sys.path.append('.')
+sys.path.append('..')
 import src.ammo_factory as ammo_factory
 
 username = password = tenant_name = 'admin'

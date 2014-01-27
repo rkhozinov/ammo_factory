@@ -1,7 +1,7 @@
 import json
 import sys
 
-sys.path.append('.')
+sys.path.append('..')
 from src import ammo_factory
 
 username = password = tenant_name = 'admin'
