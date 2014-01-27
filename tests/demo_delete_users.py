@@ -25,7 +25,10 @@ def test_delete_existing_users():
     with open('tmp/load.ini', 'w') as f:
         f.write('[phantom]\n')
         f.write('address=%s\n' % host_ip)
-        f.write('rps_schedule=const(1, 1m)')
+        f.write('rps_schedule=const(1, 1m)\n')
+        f.write('[loadosophia]\n')
+        f.write(
+            'token=LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQ0KTUdJQ0FRQUNFUUN4MjRYdUFwV2pWck1RYXJFM0kvZkpBZ01CQUFFQ0VEWlN0NEJ2MTZhUWcvVUI2RVJ1VmRVQw0KQ1FDNWRvZjUxYWpjcndJSkFQV0FmUFptdXNFSEFnaENNYk1na1lpK2t3SUpBS00yb3QxbGVxOHRBZ2duTHh6ZA0KTXRsMXpRPT0NCi0tLS0tRU5EIFJTQSBQUklW\n')
 
 
 if __name__ == '__main__':
